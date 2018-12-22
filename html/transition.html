@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title> 
+</head>
+
+<body>
+    <div class="header">
+        <button id="btn"></button>
+    </div>
+    <div class="sidebar"> </div>
+    <script>
+        var btn = document.getElementById('btn');
+        var sidebar = document.getElementsByClassName('sidebar')[0];
+        btn.addEventListener('click', function (e) {
+            sidebar.classList.add('open');
+            e.stopPropagation();
+        })
+        document.body.addEventListener('click', function (e) {
+            if (e.target != btn && !sidebar.contains(e.target)) 
+                sidebar.classList.remove('open');
+        })
+    </script>
+    <style>
+    .sidebar{
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 100%;
+        width: 260px;
+        background-color: red;
+        transition: all 0.4s cubic-bezier(0.4,0,0,1);
+        transform: translate(-280px,0);
+        z-index: 10;
+    
+    
+    
+    }
+    
+    .header{
+        width: 100%;
+        height: 40px;
+        background: #ddd;
+        padding: 0px;
+        margin: 0px;
+        position: fixed;
+    }
+    
+    .header> button{
+        position: absolute;
+        left: 10px;
+        top: 8px;
+        color: yellow;
+        height: 24px;
+        width: 24px;
+    }
+    
+    body, html{
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+    }
+    
+    .open{
+        transform: translate(0,0);
+    }</style>
+</body>
+
+</html>
