@@ -1,8 +1,7 @@
 ---
 title: tracert和DNSlookup初探
 tags:
-  - DNS
-  - 路由
+    - 网络
 abbrlink: a06d
 date: 2018-12-26 00:00:00
 ---

@@ -2,6 +2,8 @@
 title: 单播ARP
 abbrlink: 5b18
 date: 2018-12-27 00:00:00
+tags:
+    - 网络
 ---
 
 嗯，今天挺高产
@@ -37,9 +39,9 @@ Ethernet 的 dst 地址 为 `ff:ff:ff:ff:ff:ff`
 
 以太网帧的dst竟然是我自己的MAC
 
-这就好像问 wwc ，请问你是 wwc 吗？？
-
 ------------------------------------
+
+查了一下
 这其实是协议规定的一种
 
 目的是为了刷新ARP的缓存
@@ -54,20 +56,20 @@ Ethernet 的 dst 地址 为 `ff:ff:ff:ff:ff:ff`
 `https://networkengineering.stackexchange.com/questions/28803/arp-request-unicast-mac`
 
 > Unicast Poll -- Actively poll the remote host by
-periodically sending a point-to-point ARP Request
-to it, and delete the entry if no ARP Reply is
-received from N successive polls.  Again, the
-timeout should be on the order of a minute, and
-typically N is 2.
+    periodically sending a point-to-point ARP Request
+    to it, and delete the entry if no ARP Reply is
+    received from N successive polls.  Again, the
+    timeout should be on the order of a minute, and
+    typically N is 2.
 
 
 刚开始觉着 ARP 挺简单的，就是发个广播完事了
 
-但 RFC 上规定了许多的情况
+但 RFC 上规定了许多的细节处理
 
 #### ARP探测器
 
-我这里开始翻译 RFC 了
+*我这里开始翻译 RFC 了*
 
 在开始使用`IPV4`地址之前（不管这个地址是手动设定的还是 `DHCP` 还是其他的原因），host 必须发送一个ARP广播
 
