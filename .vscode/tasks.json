@@ -6,7 +6,7 @@
         {
             "label": "HexoGo",
             "type": "shell",
-            "command": "git add -A -and git commit -m \"update post\" -and git push origin master -and hexo g -and hexo d ",
+            "command": "git add -A && git commit -m \"update post\" && git push origin master && hexo g && hexo d ",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
