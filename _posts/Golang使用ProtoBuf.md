@@ -19,7 +19,7 @@ date: 2018-10-11 10:08:07
 
 路径 `$GOPATH/src/chaochaogege.com/`
 
-`chaochaogege.com`西面有个`project`，`filecatcher`
+`chaochaogege.com`里面有个`project`，`filecatcher`
 
 我现在有两个`proto`文件都处于 `chaochaogege.com/filecatcher/common/`
 
