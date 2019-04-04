@@ -1,0 +1,6 @@
+backend:
+  name: https://github.com/iamwwc/wwcblog
+  branch: master # Branch to update (optional; defaults to master)
+publish_mode: editorial_workflow
+media_folder: "images/" # Media files will be stored in the repo under images/uploads
+public_folder: "/images/" # The src attribute for uploaded media will begin with /images/uploads
