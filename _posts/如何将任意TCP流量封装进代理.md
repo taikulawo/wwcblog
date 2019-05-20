@@ -8,13 +8,15 @@ abbrlink: 48f3
 先说我对于HTTP代理的理解
 
 1. Explicit HTTP
-    需要在client上配置，GET http://www.baidu.com/index.html HTTP/1.1    这种情况下直接检索请求行可以获得主机与端口
+    需要在client上配置，GET http://www.baidu.com/index.html HTTP/1.1
+    
+    这种情况下直接检索请求行可以获得主机与端口
 
     CONNECT，需要client主动配合进行TLS预握手
 使用CONNECT会开放TCP隧道，可代理任意流量，不局限于http，即使CONNECT最初是为http而设计的
     但许多应用并不支持CONNECT，如何让他们也走代理？下面会提到
 
-2. no-Explicit HTTP
+1. no-Explicit HTTP
     透明代理，client无法感知到proxy的存在，往往使用iptables等内核特性实现
 
 
