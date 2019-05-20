@@ -11,13 +11,16 @@ abbrlink: 48f3
     需要在client上配置，GET http://www.baidu.com/index.html HTTP/1.1    这种情况下直接检索请求行可以获得主机与端口
 
     CONNECT，需要client主动配合进行TLS预握手
+使用CONNECT会开放TCP隧道，可代理任意流量，不局限于http，即使CONNECT最初是为http而设计的
     但许多应用并不支持CONNECT，如何让他们也走代理？下面会提到
 
 2. no-Explicit HTTP
     透明代理，client无法感知到proxy的存在，往往使用iptables等内核特性实现
 
+
 不管哪一个代理，协议上都指明了目的地，端口二元组，并且client主动将流量发向了代理端口
-<!--more-->
+
+让应用走http tunnel很容易，只需要知道最基本的ip:port，但想要解密SSL则需要嗅探域名，伪造证书
 
 #### 如何在client不知情的情况下拦截流量进行代理？
 
@@ -49,13 +52,14 @@ struct sockaddr_in {
 
 通过这个调用，可以获得源IP与port，这依赖于iptables对重写的包进行追踪
 
- Redsocks就是这么做的
+Redsocks就是这么做的
 https://github.com/darkk/redsocks/blob/df6394cf95d897b07974375e0d0bad13dcfcb4e8/base.c#L223
 
 有了源流量的IP:Port，就可以转换成HTTP CONNECT
+
 CONNECT 192.168.1.2:666
 
-一个可以 wrap any tcp traffic 的http 代理就这么诞生了
+一个可以 wrap any tcp traffic 的 http 代理就这么诞生了
 socks代理同理
 
 额外再写点
@@ -77,6 +81,28 @@ socks代理同理
 
 这个扩展允许一台主机托管多个ssl网站，client通过 SNI 指明想要访问的域名，然后server返回正确的证书，为了在这种情况下伪造证书，我们需要收到SNI之后和server 进行 TLS
 取得正确的证书之后签发，欺骗 client
+
+SAN使得同一个证书可以授予多个域名
+而SNI使得服务器可以托管多个https网站（virtual hosting）
+
+由于SNI在client hello阶段，所以第三方可以嗅探出要访问的域名，所以出现了一个TLS1.3的扩展，允许将SNI加密传输
+https://blog.cloudflare.com/encrypted-sni/
+
+简单来说，client hello阶段将SNI加密，server解密出来之后根据域名返回对应的证书
+
+那为什么必须要求TLS1.3？
+
+在1.3中，由于使用DH算法，所以`server`收到`client hello`之后就可以利用自己的私钥与`client hello`中的`key`推导出`masterkey`，`server` 可以直接解密 `SNI`，而1.2版本masterkey在第三阶段获得，但却在第一阶段收到SNI
+
+典型的先有鸡还是先有蛋
+
+---------------------------------------------------------------------------------------
+
+之前记着 v2ray 也支持 透明代理，刚找了下
+
+https://github.com/v2ray/manual/blob/9f4f3fcbbf7877a9ff7df6544fa684c919096483/zh_cn/chapter_02/protocols/dokodemo.md#%E9%80%8F%E6%98%8E%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE%E6%A0%B7%E4%BE%8B-example
+
+也是通过iptables完成的，普通应用没有能力去对流经协议栈的流量进行过滤
 
 https://docs.mitmproxy.org/stable/concepts-howmitmproxyworks/
 
