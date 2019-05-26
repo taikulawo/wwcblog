@@ -19,6 +19,7 @@ abbrlink: 48f3
 1. no-Explicit HTTP
     透明代理，client无法感知到proxy的存在，往往使用iptables等内核特性实现
 
+<!--more-->
 
 不管哪一个代理，协议上都指明了目的地，端口二元组，并且client主动将流量发向了代理端口
 
